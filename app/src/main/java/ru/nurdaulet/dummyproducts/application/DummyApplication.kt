@@ -2,12 +2,13 @@ package ru.nurdaulet.dummyproducts.application
 
 import android.app.Application
 import android.content.Context
+import ru.nurdaulet.dummyproducts.di.DaggerApplicationComponent
 
 class DummyApplication : Application() {
 
-//    val component by lazy {
-//        DaggerApplicationComponent.factory().create(this)
-//    }
+    val component by lazy {
+        DaggerApplicationComponent.factory().create(this)
+    }
 
     override fun onCreate() {
         super.onCreate()
