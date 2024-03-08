@@ -10,11 +10,13 @@ class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val binding = LayoutProductCardBinding.bind(itemView)
 
     fun onBind(
-        product: Product
+        product: Product,
+        onProductClickListener: ((Product) -> Unit?)?
     ) {
         binding.apply {
-
+            cardProduct.setOnClickListener {
+                onProductClickListener?.invoke(product)
+            }
         }
-
     }
 }

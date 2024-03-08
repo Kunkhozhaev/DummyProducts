@@ -8,6 +8,8 @@ import ru.nurdaulet.dummyproducts.domain.models.Product
 
 class AllProductsAdapter() : ListAdapter<Product, ProductViewHolder>(ProductsDiffCallback()) {
 
+    private var onProductClickListener: ((Product) -> Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         val view =
             LayoutInflater.from(parent.context)
@@ -17,8 +19,10 @@ class AllProductsAdapter() : ListAdapter<Product, ProductViewHolder>(ProductsDif
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
         val product = currentList[position]
-        holder.onBind(product)
+        holder.onBind(product, onProductClickListener)
     }
 
-
+    fun setOnProductClickListener(listener: (Product) -> Unit) {
+        onProductClickListener = listener
+    }
 }
