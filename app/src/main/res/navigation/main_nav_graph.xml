@@ -6,7 +6,7 @@
     app:startDestination="@id/allProductsFragment">
     <fragment
         android:id="@+id/allProductsFragment"
-        android:name="ru.nurdaulet.dummyproducts.presentation.AllProductsFragment"
+        android:name="ru.nurdaulet.dummyproducts.presentation.screens.all_products.AllProductsFragment"
         android:label="fragment_all_products"
         tools:layout="@layout/fragment_all_products" />
 </navigation>
