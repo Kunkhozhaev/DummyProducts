@@ -16,6 +16,6 @@ interface ProductsDao {
 //    @Query("SELECT * FROM titles WHERE isReadyToBeShown = 1 LIMIT 5")
 //    fun getInitialTitlesFeed(): LiveData<List<ProductDbModel>>
 
-    @Query("SELECT * FROM products_table WHERE id <= :pos + 20 ORDER BY id DESC LIMIT 20")
-    fun getTitles(pos: Int): List<ProductDbModel>
+    @Query("SELECT * FROM products_table WHERE id <= :pos + 20 ORDER BY id ASC")
+    suspend fun getProducts(pos: Int): List<ProductDbModel>
 }

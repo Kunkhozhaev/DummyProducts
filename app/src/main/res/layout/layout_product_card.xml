@@ -13,7 +13,7 @@
         android:layout_height="0dp"
         android:backgroundTint="@color/gray"
         app:cardCornerRadius="12dp"
-        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintDimensionRatio="2:3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -54,7 +54,7 @@
         app:layout_constraintTop_toBottomOf="@id/tvProductName" />
 
     <TextView
-        android:id="@+id/tvPrice"
+        android:id="@+id/tvDiscountPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -65,15 +65,15 @@
         app:layout_constraintTop_toBottomOf="@+id/tvProductDescription" />
 
     <TextView
-        android:id="@+id/tvDiscountPrice"
+        android:id="@+id/tvPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="@string/discount"
         android:textColor="@color/gray"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@id/tvPrice"
-        app:layout_constraintStart_toEndOf="@id/tvPrice" />
+        app:layout_constraintBottom_toBottomOf="@id/tvDiscountPrice"
+        app:layout_constraintStart_toEndOf="@id/tvDiscountPrice" />
 
     <TextView
         android:id="@+id/tvDiscountPercent"
@@ -83,8 +83,8 @@
         android:text="-41%"
         android:textColor="@color/red"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@id/tvPrice"
-        app:layout_constraintStart_toEndOf="@id/tvDiscountPrice" />
+        app:layout_constraintBottom_toBottomOf="@id/tvDiscountPrice"
+        app:layout_constraintStart_toEndOf="@id/tvPrice" />
 
     <TextView
         android:id="@+id/tvRating"
@@ -93,11 +93,11 @@
         android:layout_marginTop="8dp"
         android:drawablePadding="4dp"
         android:text="5.0"
-        android:textColor="@color/gray"
+        android:textColor="@color/black"
         android:textSize="14sp"
         app:drawableStartCompat="@drawable/ic_rating_star"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvPrice" />
+        app:layout_constraintTop_toBottomOf="@+id/tvDiscountPrice" />
 
     <TextView
         android:id="@+id/tvStock"
@@ -106,9 +106,9 @@
         android:layout_marginStart="16dp"
         android:drawablePadding="4dp"
         android:text="94 in stock"
-        android:textColor="@color/gray"
+        android:textColor="@color/black"
         android:textSize="14sp"
-        app:drawableStartCompat="@drawable/ic_clock"
+        app:drawableStartCompat="@drawable/ic_stock"
         app:layout_constraintBottom_toBottomOf="@id/tvRating"
         app:layout_constraintStart_toEndOf="@id/tvRating" />
 

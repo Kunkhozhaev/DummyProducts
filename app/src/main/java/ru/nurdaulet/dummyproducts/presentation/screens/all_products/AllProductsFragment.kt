@@ -5,14 +5,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import ru.nurdaulet.dummyproducts.application.DummyApplication
 import ru.nurdaulet.dummyproducts.databinding.FragmentAllProductsBinding
-import ru.nurdaulet.dummyproducts.domain.models.Product
 import ru.nurdaulet.dummyproducts.presentation.ViewModelFactory
+import ru.nurdaulet.dummyproducts.utils.Resource
 import javax.inject.Inject
 
 class AllProductsFragment : Fragment() {
@@ -30,141 +31,6 @@ class AllProductsFragment : Fragment() {
     }
 
     private lateinit var productsAdapter: AllProductsAdapter
-    private val productsList = listOf(
-        Product(
-            1,
-            "iPhone 9",
-            "An apple mobile which is nothing like apple",
-            549,
-            12.96,
-            4.69,
-            94,
-            "Apple",
-            "smartphones",
-            "https://cdn.dummyjson.com/product-images/1/thumbnail.jpg",
-            listOf(
-                "https://cdn.dummyjson.com/product-images/1/1.jpg",
-                "https://cdn.dummyjson.com/product-images/1/2.jpg",
-                "https://cdn.dummyjson.com/product-images/1/3.jpg",
-                "https://cdn.dummyjson.com/product-images/1/4.jpg",
-                "https://cdn.dummyjson.com/product-images/1/thumbnail.jpg"
-            )
-        ),
-        Product(
-            2,
-            "iPhone 9",
-            "An apple mobile which is nothing like apple",
-            549,
-            12.96,
-            4.69,
-            94,
-            "Apple",
-            "smartphones",
-            "https://cdn.dummyjson.com/product-images/1/thumbnail.jpg",
-            listOf(
-                "https://cdn.dummyjson.com/product-images/1/1.jpg",
-                "https://cdn.dummyjson.com/product-images/1/2.jpg",
-                "https://cdn.dummyjson.com/product-images/1/3.jpg",
-                "https://cdn.dummyjson.com/product-images/1/4.jpg",
-                "https://cdn.dummyjson.com/product-images/1/thumbnail.jpg"
-            )
-        ),
-        Product(
-            3,
-            "iPhone 9",
-            "An apple mobile which is nothing like apple",
-            549,
-            12.96,
-            4.69,
-            94,
-            "Apple",
-            "smartphones",
-            "https://cdn.dummyjson.com/product-images/1/thumbnail.jpg",
-            listOf(
-                "https://cdn.dummyjson.com/product-images/1/1.jpg",
-                "https://cdn.dummyjson.com/product-images/1/2.jpg",
-                "https://cdn.dummyjson.com/product-images/1/3.jpg",
-                "https://cdn.dummyjson.com/product-images/1/4.jpg",
-                "https://cdn.dummyjson.com/product-images/1/thumbnail.jpg"
-            )
-        ),
-        Product(
-            4,
-            "iPhone 9",
-            "An apple mobile which is nothing like apple",
-            549,
-            12.96,
-            4.69,
-            94,
-            "Apple",
-            "smartphones",
-            "https://cdn.dummyjson.com/product-images/1/thumbnail.jpg",
-            listOf(
-                "https://cdn.dummyjson.com/product-images/1/1.jpg",
-                "https://cdn.dummyjson.com/product-images/1/2.jpg",
-                "https://cdn.dummyjson.com/product-images/1/3.jpg",
-                "https://cdn.dummyjson.com/product-images/1/4.jpg",
-                "https://cdn.dummyjson.com/product-images/1/thumbnail.jpg"
-            )
-        ),
-        Product(
-            5,
-            "iPhone 9",
-            "An apple mobile which is nothing like apple",
-            549,
-            12.96,
-            4.69,
-            94,
-            "Apple",
-            "smartphones",
-            "https://cdn.dummyjson.com/product-images/1/thumbnail.jpg",
-            listOf(
-                "https://cdn.dummyjson.com/product-images/1/1.jpg",
-                "https://cdn.dummyjson.com/product-images/1/2.jpg",
-                "https://cdn.dummyjson.com/product-images/1/3.jpg",
-                "https://cdn.dummyjson.com/product-images/1/4.jpg",
-                "https://cdn.dummyjson.com/product-images/1/thumbnail.jpg"
-            )
-        ),
-        Product(
-            6,
-            "iPhone 9",
-            "An apple mobile which is nothing like apple",
-            549,
-            12.96,
-            4.69,
-            94,
-            "Apple",
-            "smartphones",
-            "https://cdn.dummyjson.com/product-images/1/thumbnail.jpg",
-            listOf(
-                "https://cdn.dummyjson.com/product-images/1/1.jpg",
-                "https://cdn.dummyjson.com/product-images/1/2.jpg",
-                "https://cdn.dummyjson.com/product-images/1/3.jpg",
-                "https://cdn.dummyjson.com/product-images/1/4.jpg",
-                "https://cdn.dummyjson.com/product-images/1/thumbnail.jpg"
-            )
-        ),
-        Product(
-            7,
-            "iPhone 9",
-            "An apple mobile which is nothing like apple",
-            549,
-            12.96,
-            4.69,
-            94,
-            "Apple",
-            "smartphones",
-            "https://cdn.dummyjson.com/product-images/1/thumbnail.jpg",
-            listOf(
-                "https://cdn.dummyjson.com/product-images/1/1.jpg",
-                "https://cdn.dummyjson.com/product-images/1/2.jpg",
-                "https://cdn.dummyjson.com/product-images/1/3.jpg",
-                "https://cdn.dummyjson.com/product-images/1/4.jpg",
-                "https://cdn.dummyjson.com/product-images/1/thumbnail.jpg"
-            )
-        ),
-    )
 
     override fun onAttach(context: Context) {
         component.inject(this)
@@ -182,7 +48,10 @@ class AllProductsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
         viewModel = ViewModelProvider(this, viewModelFactory)[AllProductsVM::class.java]
-        productsAdapter.submitList(productsList)
+        //TODO For the first start get firstly from db. If not exist from network converted to db again
+        viewModel.getProducts(0)
+        viewModelObservers()
+
         productsAdapter.setOnProductClickListener {
             findNavController().navigate(AllProductsFragmentDirections.actionAllProductsFragmentToProductFragment())
         }
@@ -194,7 +63,25 @@ class AllProductsFragment : Fragment() {
 
         binding.rvProducts.adapter = productsAdapter
         binding.rvProducts.layoutManager = GridLayoutManager(activity, 2)
+    }
 
+    private fun viewModelObservers() {
+        viewModel.products.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is Resource.Success -> {
+                    response.data?.let { products ->
+                        productsAdapter.submitList(products)
+                    }
+                }
+
+                is Resource.Error -> {
+                    Toast.makeText(requireActivity(), response.message, Toast.LENGTH_SHORT)
+                        .show()
+                }
+
+                is Resource.Loading -> {}
+            }
+        }
     }
 
     override fun onDestroyView() {

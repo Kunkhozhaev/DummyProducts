@@ -22,27 +22,27 @@ class AllProductsVM @Inject constructor(
     private val repository: Repository
 ) : AndroidViewModel(app) {
 
-    private var _registerUser: MutableLiveData<Resource<List<Product>>> = MutableLiveData()
-    val registerUser: LiveData<Resource<List<Product>>> get() = _registerUser
+    private var _products: MutableLiveData<Resource<List<Product>>> = MutableLiveData()
+    val products: LiveData<Resource<List<Product>>> get() = _products
 
-    fun registerUser(skip: Int) = viewModelScope.launch {
-        _registerUser.value = Resource.Loading()
+    fun getProducts(skip: Int) = viewModelScope.launch {
+        _products.value = Resource.Loading()
         try {
             if (hasInternetConnection()) {
                 repository.getProducts(skip,
                     onSuccess = {
-                        _registerUser.value = Resource.Success(it)
+                        _products.value = Resource.Success(it)
 
                     }, onFailure = {
-                        _registerUser.value = Resource.Error(it)
+                        _products.value = Resource.Error(it)
                     })
             } else {
-                _registerUser.value = Resource.Error(NO_NETWORK)
+                _products.value = Resource.Error(NO_NETWORK)
             }
         } catch (t: Throwable) {
             when (t) {
-                is IOException -> _registerUser.value = Resource.Error(t.message)
-                else -> _registerUser.value = Resource.Error(t.message)
+                is IOException -> _products.value = Resource.Error(t.message)
+                else -> _products.value = Resource.Error(t.message)
             }
         }
     }

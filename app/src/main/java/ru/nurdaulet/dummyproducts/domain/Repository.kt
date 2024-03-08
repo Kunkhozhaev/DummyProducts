@@ -7,5 +7,5 @@ interface Repository {
         skip: Int,
         onSuccess: (List<Product>) -> Unit,
         onFailure: (msg: String?) -> Unit
-    ): List<Product>
+    )
 }

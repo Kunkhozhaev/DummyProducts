@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class Mapper @Inject constructor() {
 
-    fun mapDtoToDbModel(product: ProductDto): ProductDbModel {
+    private fun mapDtoToDbModel(product: ProductDto): ProductDbModel {
         return ProductDbModel(
             id = product.id,
             title = product.title,
@@ -23,7 +23,7 @@ class Mapper @Inject constructor() {
         )
     }
 
-    fun mapDbModelToEntity(productDao: ProductDbModel): Product {
+    private fun mapDbModelToEntity(productDao: ProductDbModel): Product {
         return Product(
             id = productDao.id,
             title = productDao.title,
@@ -39,17 +39,21 @@ class Mapper @Inject constructor() {
         )
     }
 
-    fun mapImagesListToString(imagesList: List<String>): String {
+    private fun mapImagesListToString(imagesList: List<String>): String {
         return imagesList.joinToString(",") {
             it
         }
     }
 
-    fun mapStringToImagesList(images: String): List<String> {
+    private fun mapStringToImagesList(images: String): List<String> {
         return images.split(",")
     }
 
     fun mapListDtoToDbModel(list: List<ProductDto>): List<ProductDbModel> = list.map {
         mapDtoToDbModel(it)
+    }
+
+    fun mapListDbModelToEntity(list: List<ProductDbModel>): List<Product> = list.map {
+        mapDbModelToEntity(it)
     }
 }
