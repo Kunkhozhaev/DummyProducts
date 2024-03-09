@@ -1,6 +1,7 @@
 package ru.nurdaulet.dummyproducts.presentation.screens.product
 
 import android.content.res.Resources
+import android.graphics.Paint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
+import ru.nurdaulet.dummyproducts.R
 import ru.nurdaulet.dummyproducts.databinding.FragmentProductBinding
 import ru.nurdaulet.dummyproducts.domain.models.ImageProduct
 import ru.nurdaulet.dummyproducts.utils.roundTo2digits
@@ -47,9 +49,12 @@ class ProductFragment : Fragment() {
             tvStock.text = product.stock.toString()
             val price = product.price
             val discount = product.discountPercentage
-            tvPrice.text = price.toString()
-            tvDiscountPrice.text = (price * (1 - discount / 100)).roundTo2digits().toString()
-            tvDiscountPercent.text = product.discountPercentage.toString()
+            val priceWithoutDiscount = (price * (1 - discount / 100)).roundTo2digits()
+            tvPrice.text = getString(R.string.price_format, price.toString())
+            tvPriceWithoutDiscount.text = getString(R.string.price_format, priceWithoutDiscount.toString())
+            tvPriceWithoutDiscount.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG or tvPrice.paintFlags
+            tvDiscountPercent.text =
+                getString(R.string.discount_percent_format, discount.toString())
         }
 
         val listOfImages = mutableListOf<ImageProduct>()

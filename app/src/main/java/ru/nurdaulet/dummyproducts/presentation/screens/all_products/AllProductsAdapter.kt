@@ -1,12 +1,15 @@
 package ru.nurdaulet.dummyproducts.presentation.screens.all_products
 
+import android.app.Application
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import ru.nurdaulet.dummyproducts.R
 import ru.nurdaulet.dummyproducts.domain.models.Product
+import javax.inject.Inject
 
-class AllProductsAdapter() : ListAdapter<Product, ProductViewHolder>(ProductsDiffCallback()) {
+class AllProductsAdapter @Inject constructor(private val application: Application) :
+    ListAdapter<Product, ProductViewHolder>(ProductsDiffCallback()) {
 
     private var onProductClickListener: ((Product) -> Unit)? = null
 
@@ -14,7 +17,7 @@ class AllProductsAdapter() : ListAdapter<Product, ProductViewHolder>(ProductsDif
         val view =
             LayoutInflater.from(parent.context)
                 .inflate(R.layout.layout_product_card, parent, false)
-        return ProductViewHolder(view)
+        return ProductViewHolder(view, application)
     }
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {

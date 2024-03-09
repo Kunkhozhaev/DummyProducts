@@ -1,5 +1,6 @@
 package ru.nurdaulet.dummyproducts.presentation.screens.all_products
 
+import android.app.Application
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -22,6 +23,9 @@ class AllProductsFragment : Fragment() {
     private val binding: FragmentAllProductsBinding
         get() = _binding ?: throw RuntimeException("FragmentAllProductsBinding == null")
 
+
+    @Inject
+    lateinit var application: Application
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     private lateinit var viewModel: AllProductsVM
@@ -59,7 +63,7 @@ class AllProductsFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        productsAdapter = AllProductsAdapter()
+        productsAdapter = AllProductsAdapter(application)
 
         binding.rvProducts.adapter = productsAdapter
         binding.rvProducts.layoutManager = GridLayoutManager(activity, 2)

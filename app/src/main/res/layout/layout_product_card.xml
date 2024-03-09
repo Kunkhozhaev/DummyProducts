@@ -54,7 +54,7 @@
         app:layout_constraintTop_toBottomOf="@id/tvProductName" />
 
     <TextView
-        android:id="@+id/tvDiscountPrice"
+        android:id="@+id/tvPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -65,15 +65,16 @@
         app:layout_constraintTop_toBottomOf="@+id/tvProductDescription" />
 
     <TextView
-        android:id="@+id/tvPrice"
+        android:id="@+id/tvPriceWithoutDiscount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="@string/discount"
         android:textColor="@color/gray"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@id/tvDiscountPrice"
-        app:layout_constraintStart_toEndOf="@id/tvDiscountPrice" />
+        app:layout_constraintBottom_toBottomOf="@id/tvPrice"
+        app:layout_constraintStart_toEndOf="@id/tvPrice"
+        app:layout_constraintTop_toTopOf="@+id/tvPrice" />
 
     <TextView
         android:id="@+id/tvDiscountPercent"
@@ -83,8 +84,9 @@
         android:text="-41%"
         android:textColor="@color/red"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@id/tvDiscountPrice"
-        app:layout_constraintStart_toEndOf="@id/tvPrice" />
+        app:layout_constraintBottom_toBottomOf="@id/tvPrice"
+        app:layout_constraintStart_toEndOf="@id/tvPriceWithoutDiscount"
+        app:layout_constraintTop_toTopOf="@+id/tvPriceWithoutDiscount" />
 
     <TextView
         android:id="@+id/tvRating"
@@ -97,7 +99,7 @@
         android:textSize="14sp"
         app:drawableStartCompat="@drawable/ic_rating_star"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvDiscountPrice" />
+        app:layout_constraintTop_toBottomOf="@+id/tvPrice" />
 
     <TextView
         android:id="@+id/tvStock"
