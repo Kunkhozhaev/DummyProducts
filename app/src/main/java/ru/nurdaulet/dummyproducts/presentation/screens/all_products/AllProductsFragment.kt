@@ -52,8 +52,8 @@ class AllProductsFragment : Fragment() {
         viewModel.getProducts(0)
         viewModelObservers()
 
-        productsAdapter.setOnProductClickListener {
-            findNavController().navigate(AllProductsFragmentDirections.actionAllProductsFragmentToProductFragment())
+        productsAdapter.setOnProductClickListener { product ->
+            findNavController().navigate(AllProductsFragmentDirections.actionAllProductsFragmentToProductFragment(product))
         }
 
     }

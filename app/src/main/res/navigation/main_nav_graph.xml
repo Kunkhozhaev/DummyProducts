@@ -8,7 +8,7 @@
         android:id="@+id/allProductsFragment"
         android:name="ru.nurdaulet.dummyproducts.presentation.screens.all_products.AllProductsFragment"
         android:label="fragment_all_products"
-        tools:layout="@layout/fragment_all_products" >
+        tools:layout="@layout/fragment_all_products">
         <action
             android:id="@+id/action_allProductsFragment_to_productFragment"
             app:destination="@id/productFragment" />
@@ -17,5 +17,9 @@
         android:id="@+id/productFragment"
         android:name="ru.nurdaulet.dummyproducts.presentation.screens.product.ProductFragment"
         android:label="fragment_product"
-        tools:layout="@layout/fragment_product" />
+        tools:layout="@layout/fragment_product">
+        <argument
+            android:name="product"
+            app:argType="ru.nurdaulet.dummyproducts.domain.models.Product" />
+    </fragment>
 </navigation>

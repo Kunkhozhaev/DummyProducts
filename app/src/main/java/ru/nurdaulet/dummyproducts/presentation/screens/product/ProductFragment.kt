@@ -7,12 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import ru.nurdaulet.dummyproducts.databinding.FragmentProductBinding
 import ru.nurdaulet.dummyproducts.domain.models.ImageProduct
+import ru.nurdaulet.dummyproducts.utils.roundTo2digits
 import kotlin.math.abs
 
 class ProductFragment : Fragment() {
@@ -21,15 +23,9 @@ class ProductFragment : Fragment() {
     private val binding: FragmentProductBinding
         get() = _binding ?: throw RuntimeException("FragmentProductBinding == null")
 
-    private lateinit var vpAdapter: ViewPagerAdapter
+    private val args by navArgs<ProductFragmentArgs>()
 
-    private val listOfImages = listOf(
-        ImageProduct("https://cdn.dummyjson.com/product-images/1/1.jpg"),
-        ImageProduct("https://cdn.dummyjson.com/product-images/1/2.jpg"),
-        ImageProduct("https://cdn.dummyjson.com/product-images/1/3.jpg"),
-        ImageProduct("https://cdn.dummyjson.com/product-images/1/4.jpg"),
-        ImageProduct("https://cdn.dummyjson.com/product-images/1/thumbnail.jpg"),
-    )
+    private lateinit var vpAdapter: ViewPagerAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -42,6 +38,24 @@ class ProductFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupMenu()
         setupViewPager()
+
+        val product = args.product
+        binding.apply {
+            tvProductName.text = product.title
+            tvProductDescription.text = product.description
+            tvRating.text = product.rating.toString()
+            tvStock.text = product.stock.toString()
+            val price = product.price
+            val discount = product.discountPercentage
+            tvPrice.text = price.toString()
+            tvDiscountPrice.text = (price * (1 - discount / 100)).roundTo2digits().toString()
+            tvDiscountPercent.text = product.discountPercentage.toString()
+        }
+
+        val listOfImages = mutableListOf<ImageProduct>()
+        product.images.forEach {
+            listOfImages.add(ImageProduct(it))
+        }
         vpAdapter.submitList(listOfImages.toList())
 
     }
@@ -58,6 +72,7 @@ class ProductFragment : Fragment() {
                 RecyclerView.OVER_SCROLL_NEVER
         }
 
+        //Zoom-in and Zoom-out effect
         val compositePageTransformer = CompositePageTransformer()
         compositePageTransformer.addTransformer(MarginPageTransformer((40 * Resources.getSystem().displayMetrics.density).toInt()))
         compositePageTransformer.addTransformer { page, position ->
