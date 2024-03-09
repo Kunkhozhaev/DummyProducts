@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -25,14 +26,26 @@ class AllProductsVM @Inject constructor(
     private var _products: MutableLiveData<Resource<List<Product>>> = MutableLiveData()
     val products: LiveData<Resource<List<Product>>> get() = _products
 
-    fun getProducts(skip: Int) = viewModelScope.launch {
+    var productsOffset = 0
+    private var productsResponse: MutableList<Product>? = null
+
+    fun getProducts() = viewModelScope.launch {
         _products.value = Resource.Loading()
         try {
             if (hasInternetConnection()) {
-                repository.getProducts(skip,
-                    onSuccess = {
-                        _products.value = Resource.Success(it)
-
+                repository.getProducts(productsOffset,
+                    onSuccess = { data ->
+                        Log.d("Pagination", "Skip $productsOffset Last: ${data.last()}")
+                        if (data.isNotEmpty()) {
+                            if (productsResponse == null) {
+                                productsResponse = data.toMutableList()
+                            } else {
+                                val oldData = productsResponse
+                                val newData = data
+                                oldData?.addAll(newData)
+                            }
+                            _products.value = Resource.Success(productsResponse ?: data)
+                        }
                     }, onFailure = {
                         _products.value = Resource.Error(it)
                     })
