@@ -73,17 +73,21 @@ class AllProductsFragment : Fragment() {
         viewModel.products.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
+                    binding.loadingBar.visibility = View.GONE
                     response.data?.let { products ->
                         productsAdapter.submitList(products)
                     }
                 }
 
                 is Resource.Error -> {
+                    binding.loadingBar.visibility = View.GONE
                     Toast.makeText(requireActivity(), response.message, Toast.LENGTH_SHORT)
                         .show()
                 }
 
-                is Resource.Loading -> {}
+                is Resource.Loading -> {
+                    binding.loadingBar.visibility = View.VISIBLE
+                }
             }
         }
     }
