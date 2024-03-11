@@ -56,4 +56,24 @@ class Mapper @Inject constructor() {
     fun mapListDbModelToEntity(list: List<ProductDbModel>): List<Product> = list.map {
         mapDbModelToEntity(it)
     }
+
+    private fun mapDtoToModel(product: ProductDto): Product {
+        return Product(
+            id = product.id,
+            title = product.title,
+            description = product.description,
+            price = product.price,
+            discountPercentage = product.discountPercentage,
+            rating = product.rating,
+            stock = product.stock,
+            brand = product.brand,
+            category = product.category,
+            thumbnail = product.thumbnail,
+            images = product.images
+        )
+    }
+
+    fun mapListDtoToModel(list: List<ProductDto>): List<Product> = list.map {
+        mapDtoToModel(it)
+    }
 }

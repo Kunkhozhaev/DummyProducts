@@ -24,10 +24,11 @@ class RepositoryImpl @Inject constructor(
         if (response.isSuccessful) {
             response.body()?.let { data ->
                 val products = data.products
-                if (data.products.isNotEmpty()) {
-                    productsDao.insertProductList(mapper.mapListDtoToDbModel(products))
-                    val productsDbList = productsDao.getProducts(skip)
-                    onSuccess.invoke(mapper.mapListDbModelToEntity(productsDbList))
+                if (products.isNotEmpty()) {
+                    //TODO Clear database
+//                    productsDao.insertProductList(mapper.mapListDtoToDbModel(products))
+//                    val productsDbList = productsDao.getProducts(skip)
+                    onSuccess.invoke(mapper.mapListDtoToModel(products))
                 }
             }
         } else {
