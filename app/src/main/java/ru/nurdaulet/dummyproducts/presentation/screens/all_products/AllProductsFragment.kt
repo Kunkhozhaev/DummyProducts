@@ -56,13 +56,14 @@ class AllProductsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupRecyclerView()
         viewModel = ViewModelProvider(this, viewModelFactory)[AllProductsVM::class.java]
-        //TODO For the first start get firstly from db. If not exist from network converted to db again
         viewModel.getProducts()
+        setupRecyclerView()
         viewModelObservers()
 
         productsAdapter.setOnProductClickListener { product ->
+            viewModel.productsOffset = 0
+            viewModel.productsResponse = null
             findNavController().navigate(
                 AllProductsFragmentDirections.actionAllProductsFragmentToProductFragment(
                     product
@@ -87,10 +88,10 @@ class AllProductsFragment : Fragment() {
             when (response) {
                 is Resource.Success -> {
                     binding.loadingBar.visibility = View.GONE
+                    isLoading = false
                     response.data?.let { products ->
                         Log.d("Pagination", "---ON SUCCESS---")
                         Log.d("Pagination", "Products size: ${products.size}")
-                        //TODO Если долистать до 100 прдоуктов -> зайти в продукт -> вернуться, то ничего не отобразится
                         if (products.isNotEmpty()) {
                             productsAdapter.submitList(products.toList())
                             viewModel.productsOffset += LIMIT
@@ -102,12 +103,14 @@ class AllProductsFragment : Fragment() {
                 }
 
                 is Resource.Error -> {
+                    isLoading = false
                     binding.loadingBar.visibility = View.GONE
                     Toast.makeText(requireActivity(), response.message, Toast.LENGTH_SHORT)
                         .show()
                 }
 
                 is Resource.Loading -> {
+                    isLoading = true
                     if (viewModel.productsOffset == 100) {
                         binding.loadingBar.visibility = View.GONE
                     } else {

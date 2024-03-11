@@ -19,7 +19,6 @@ class RepositoryImpl @Inject constructor(
         onSuccess: (List<Product>) -> Unit,
         onFailure: (msg: String?) -> Unit
     ) {
-
         val response = apiService.getProducts(skip)
         if (response.isSuccessful) {
             response.body()?.let { data ->

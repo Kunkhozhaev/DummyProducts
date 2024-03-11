@@ -27,6 +27,8 @@ class ProductViewHolder(itemView: View, private val application: Application) :
             //TODO Add error placeholder
             Glide.with(itemView)
                 .load(product.thumbnail)
+//                .placeholder()
+//                .error()
                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                 .into(ivProduct)
 

@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 import ru.nurdaulet.dummyproducts.application.DummyApplication
 import ru.nurdaulet.dummyproducts.domain.Repository
 import ru.nurdaulet.dummyproducts.domain.models.Product
+import ru.nurdaulet.dummyproducts.utils.Constants.LIMIT
 import ru.nurdaulet.dummyproducts.utils.Constants.NO_NETWORK
 import ru.nurdaulet.dummyproducts.utils.Resource
 import java.io.IOException
@@ -27,7 +28,7 @@ class AllProductsVM @Inject constructor(
     val products: LiveData<Resource<List<Product>>> get() = _products
 
     var productsOffset = 0
-    private var productsResponse: MutableList<Product>? = null
+    var productsResponse: MutableList<Product>? = null
 
     fun getProducts() = viewModelScope.launch {
         _products.value = Resource.Loading()
