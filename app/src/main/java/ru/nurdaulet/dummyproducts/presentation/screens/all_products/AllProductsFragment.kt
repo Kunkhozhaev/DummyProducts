@@ -90,6 +90,7 @@ class AllProductsFragment : Fragment() {
                     response.data?.let { products ->
                         Log.d("Pagination", "---ON SUCCESS---")
                         Log.d("Pagination", "Products size: ${products.size}")
+                        //TODO Если долистать до 100 прдоуктов -> зайти в продукт -> вернуться, то ничего не отобразится
                         if (products.isNotEmpty()) {
                             productsAdapter.submitList(products.toList())
                             viewModel.productsOffset += LIMIT
