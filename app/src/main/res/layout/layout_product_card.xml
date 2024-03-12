@@ -97,9 +97,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:drawablePadding="@dimen/drawable_padding"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        app:drawableStartCompat="@drawable/ic_stock"
         app:layout_constraintBottom_toBottomOf="@id/tvRating"
         app:layout_constraintStart_toEndOf="@id/tvRating"
         tools:text="94 in stock" />

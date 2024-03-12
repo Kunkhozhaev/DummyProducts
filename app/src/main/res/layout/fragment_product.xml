@@ -10,13 +10,13 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
+        style="@style/MyToolbar"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/ic_arrow_back" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/vp2"
@@ -48,7 +48,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:drawablePadding="@dimen/drawable_padding"
-        app:drawableStartCompat="@drawable/ic_stock"
         app:layout_constraintBottom_toBottomOf="@id/tvRating"
         app:layout_constraintStart_toEndOf="@id/tvRating"
         tools:text="94 in stock" />
