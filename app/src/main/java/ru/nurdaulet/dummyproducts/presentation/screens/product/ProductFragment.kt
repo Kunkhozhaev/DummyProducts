@@ -46,12 +46,13 @@ class ProductFragment : Fragment() {
             tvProductName.text = product.title
             tvProductDescription.text = product.description
             tvRating.text = product.rating.toString()
-            tvStock.text = product.stock.toString()
+            tvStock.text = getString(R.string.stock_number_format, product.stock.toString())
             val price = product.price
             val discount = product.discountPercentage
             val priceWithoutDiscount = (price * (1 - discount / 100)).roundTo2digits()
             tvPrice.text = getString(R.string.price_format, price.toString())
-            tvPriceWithoutDiscount.text = getString(R.string.price_format, priceWithoutDiscount.toString())
+            tvPriceWithoutDiscount.text =
+                getString(R.string.price_format, priceWithoutDiscount.toString())
             tvPriceWithoutDiscount.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG or tvPrice.paintFlags
             tvDiscountPercent.text =
                 getString(R.string.discount_percent_format, discount.toString())

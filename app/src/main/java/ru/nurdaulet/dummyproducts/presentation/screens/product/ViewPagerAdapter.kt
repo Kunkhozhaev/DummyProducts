@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.ListAdapter
 import ru.nurdaulet.dummyproducts.R
 import ru.nurdaulet.dummyproducts.domain.models.ImageProduct
 
-class ViewPagerAdapter() : ListAdapter<ImageProduct, ImageViewHolder>(ImagesDiffCallback()) {
+class ViewPagerAdapter : ListAdapter<ImageProduct, ImageViewHolder>(ImagesDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
         val view =

@@ -34,7 +34,8 @@ class ProductViewHolder(itemView: View, private val application: Application) :
             tvProductName.text = product.title
             tvProductDescription.text = product.description
             tvRating.text = product.rating.toString()
-            tvStock.text = product.stock.toString()
+            tvStock.text =
+                application.getString(R.string.stock_number_format, product.stock.toString())
             val price = product.price
             val discount = product.discountPercentage
             val priceWithoutDiscount = (price * (1 - discount / 100)).roundTo2digits()

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
@@ -33,13 +34,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Iphone 9"
-        android:maxLines="1"
         android:ellipsize="end"
+        android:maxLines="1"
         android:textColor="@color/black"
         android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cardProduct" />
+        app:layout_constraintTop_toBottomOf="@id/cardProduct"
+        tools:text="Iphone 9" />
 
     <TextView
         android:id="@+id/tvProductDescription"
@@ -48,59 +50,59 @@
         android:layout_marginTop="4dp"
         android:ellipsize="end"
         android:maxLines="2"
-        android:text="An apple mobile which is nothing like apple"
         android:textColor="@color/black"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvProductName" />
+        app:layout_constraintTop_toBottomOf="@id/tvProductName"
+        tools:text="An apple mobile which is nothing like apple" />
 
     <TextView
         android:id="@+id/tvPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="2199 ₽"
+        android:layout_marginTop="4dp"
         android:textColor="@color/green"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvProductDescription" />
+        app:layout_constraintTop_toBottomOf="@+id/tvProductDescription"
+        tools:text="2199 ₽" />
 
     <TextView
         android:id="@+id/tvPriceWithoutDiscount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="@string/discount"
         android:textColor="@color/gray"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@id/tvPrice"
         app:layout_constraintStart_toEndOf="@id/tvPrice"
-        app:layout_constraintTop_toTopOf="@+id/tvPrice" />
+        app:layout_constraintTop_toTopOf="@+id/tvPrice"
+        tools:text="5999 ₽" />
 
     <TextView
         android:id="@+id/tvDiscountPercent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="-41%"
         android:textColor="@color/red"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@id/tvPrice"
         app:layout_constraintStart_toEndOf="@id/tvPriceWithoutDiscount"
-        app:layout_constraintTop_toTopOf="@+id/tvPriceWithoutDiscount" />
+        app:layout_constraintTop_toTopOf="@+id/tvPrice"
+        tools:text="-41%" />
 
     <TextView
         android:id="@+id/tvRating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:drawablePadding="4dp"
-        android:text="5.0"
         android:textColor="@color/black"
         android:textSize="14sp"
         app:drawableStartCompat="@drawable/ic_rating_star"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvPrice" />
+        app:layout_constraintTop_toBottomOf="@+id/tvPrice"
+        tools:text="5.0" />
 
     <TextView
         android:id="@+id/tvStock"
@@ -108,19 +110,19 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:drawablePadding="4dp"
-        android:text="94 in stock"
         android:textColor="@color/black"
         android:textSize="14sp"
         app:drawableStartCompat="@drawable/ic_stock"
         app:layout_constraintBottom_toBottomOf="@id/tvRating"
-        app:layout_constraintStart_toEndOf="@id/tvRating" />
+        app:layout_constraintStart_toEndOf="@id/tvRating"
+        tools:text="94 in stock" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Buy"
+        android:layout_marginTop="8dp"
+        android:text="@string/buy"
         android:textAllCaps="true"
-        android:layout_marginTop="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
