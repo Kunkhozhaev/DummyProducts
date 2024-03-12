@@ -1,14 +1,12 @@
 package ru.nurdaulet.dummyproducts.data.repository
 
 import ru.nurdaulet.dummyproducts.data.Mapper
-import ru.nurdaulet.dummyproducts.data.db.ProductsDao
 import ru.nurdaulet.dummyproducts.data.network.ApiFactory
 import ru.nurdaulet.dummyproducts.domain.Repository
 import ru.nurdaulet.dummyproducts.domain.models.Product
 import javax.inject.Inject
 
 class RepositoryImpl @Inject constructor(
-    private val productsDao: ProductsDao,
     private val mapper: Mapper,
 ) : Repository {
 
@@ -24,9 +22,6 @@ class RepositoryImpl @Inject constructor(
             response.body()?.let { data ->
                 val products = data.products
                 if (products.isNotEmpty()) {
-                    //TODO Clear database
-//                    productsDao.insertProductList(mapper.mapListDtoToDbModel(products))
-//                    val productsDbList = productsDao.getProducts(skip)
                     onSuccess.invoke(mapper.mapListDtoToModel(products))
                 }
             }

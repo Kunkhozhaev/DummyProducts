@@ -1,4 +1,4 @@
-package fm.sok.app.di
+package ru.nurdaulet.dummyproducts.di
 
 import javax.inject.Scope
 

@@ -3,7 +3,6 @@ package ru.nurdaulet.dummyproducts.di
 import android.app.Application
 import dagger.BindsInstance
 import dagger.Component
-import fm.sok.app.di.ApplicationScope
 import ru.nurdaulet.dummyproducts.presentation.MainActivity
 import ru.nurdaulet.dummyproducts.presentation.screens.all_products.AllProductsFragment
 

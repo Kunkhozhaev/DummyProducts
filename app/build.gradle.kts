@@ -52,9 +52,6 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    //Swipe to refresh
-    implementation(libs.androidx.swiperefreshlayout)
-
     // Navigation
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
@@ -83,9 +80,4 @@ dependencies {
     //Chucker
     debugImplementation(libs.library)
     releaseImplementation(libs.library.no.op)
-
-    //Room
-    implementation(libs.androidx.room.runtime)
-    ksp(libs.androidx.room.compiler)
-    implementation(libs.androidx.room.ktx)
 }
