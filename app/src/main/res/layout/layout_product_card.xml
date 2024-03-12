@@ -29,49 +29,40 @@
 
     <TextView
         android:id="@+id/tvProductName"
+        style="@style/ProductTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cardProduct"
         tools:text="Iphone 9" />
 
     <TextView
         android:id="@+id/tvProductDescription"
+        style="@style/ProductDescription"
         android:layout_width="@dimen/zero_dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:ellipsize="end"
-        android:maxLines="2"
-        android:textColor="@color/black"
-        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvProductName"
         tools:text="An apple mobile which is nothing like apple" />
 
     <TextView
         android:id="@+id/tvPrice"
+        style="@style/ProductPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:textColor="@color/green"
-        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvProductDescription"
         tools:text="2199 ₽" />
 
     <TextView
         android:id="@+id/tvPriceWithoutDiscount"
+        style="@style/ProductPriceWithoutDiscount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:textColor="@color/gray"
-        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@id/tvPrice"
         app:layout_constraintStart_toEndOf="@id/tvPrice"
         app:layout_constraintTop_toTopOf="@+id/tvPrice"
@@ -79,11 +70,10 @@
 
     <TextView
         android:id="@+id/tvDiscountPercent"
+        style="@style/ProductDiscount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:textColor="@color/red"
-        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@id/tvPrice"
         app:layout_constraintStart_toEndOf="@id/tvPriceWithoutDiscount"
         app:layout_constraintTop_toTopOf="@+id/tvPrice"
@@ -91,12 +81,11 @@
 
     <TextView
         android:id="@+id/tvRating"
+        style="@style/ProductRating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:drawablePadding="@dimen/drawable_padding"
-        android:textColor="@color/black"
-        android:textSize="14sp"
         app:drawableStartCompat="@drawable/ic_rating_star"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvPrice"
@@ -104,6 +93,7 @@
 
     <TextView
         android:id="@+id/tvStock"
+        style="@style/StockCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
