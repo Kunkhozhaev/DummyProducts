@@ -29,8 +29,6 @@ data class ProductsOffsetItemDecoration(
             outRect.right = rightOffset / 2
         }
 
-        //outRect.left = leftOffset
         outRect.bottom = bottomOffset
-        //outRect.set(leftOffset, topOffset, rightOffset, bottomOffset)
     }
 }
