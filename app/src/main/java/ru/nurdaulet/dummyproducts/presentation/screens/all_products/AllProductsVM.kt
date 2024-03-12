@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -13,7 +12,6 @@ import kotlinx.coroutines.launch
 import ru.nurdaulet.dummyproducts.application.DummyApplication
 import ru.nurdaulet.dummyproducts.domain.Repository
 import ru.nurdaulet.dummyproducts.domain.models.Product
-import ru.nurdaulet.dummyproducts.utils.Constants.LIMIT
 import ru.nurdaulet.dummyproducts.utils.Constants.NO_NETWORK
 import ru.nurdaulet.dummyproducts.utils.Resource
 import java.io.IOException
@@ -36,7 +34,6 @@ class AllProductsVM @Inject constructor(
             if (hasInternetConnection()) {
                 repository.getProducts(productsOffset,
                     onSuccess = { data ->
-                        Log.d("Pagination", "Skip $productsOffset Last: ${data.last()}")
                         if (data.isNotEmpty()) {
                             if (productsResponse == null) {
                                 productsResponse = data.toMutableList()

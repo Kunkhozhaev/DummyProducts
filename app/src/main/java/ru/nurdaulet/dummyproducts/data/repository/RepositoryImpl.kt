@@ -11,7 +11,6 @@ class RepositoryImpl @Inject constructor(
 ) : Repository {
 
     private val apiService = ApiFactory.apiService
-
     override suspend fun getProducts(
         skip: Int,
         onSuccess: (List<Product>) -> Unit,

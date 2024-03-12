@@ -3,7 +3,6 @@ package ru.nurdaulet.dummyproducts.presentation.screens.all_products
 import android.app.Application
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,19 +28,16 @@ class AllProductsFragment : Fragment() {
     private val binding: FragmentAllProductsBinding
         get() = _binding ?: throw RuntimeException("FragmentAllProductsBinding == null")
 
-
     @Inject
     lateinit var application: Application
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     private lateinit var viewModel: AllProductsVM
-
+    private lateinit var productsAdapter: AllProductsAdapter
     private val component by lazy {
         (requireActivity().application as DummyApplication).component
     }
-
-    private lateinit var productsAdapter: AllProductsAdapter
 
     override fun onAttach(context: Context) {
         component.inject(this)
@@ -100,8 +96,6 @@ class AllProductsFragment : Fragment() {
                     binding.loadingBar.visibility = View.GONE
                     isLoading = false
                     response.data?.let { products ->
-                        Log.d("Pagination", "---ON SUCCESS---")
-                        Log.d("Pagination", "Products size: ${products.size}")
                         if (products.isNotEmpty()) {
                             productsAdapter.submitList(products.toList())
                             viewModel.productsOffset += LIMIT
@@ -115,7 +109,7 @@ class AllProductsFragment : Fragment() {
                 is Resource.Error -> {
                     isLoading = false
                     binding.loadingBar.visibility = View.GONE
-                    Toast.makeText(requireActivity(), response.message, Toast.LENGTH_SHORT)
+                    Toast.makeText(requireContext(), response.message, Toast.LENGTH_SHORT)
                         .show()
                 }
 

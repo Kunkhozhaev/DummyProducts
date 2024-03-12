@@ -76,8 +76,4 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
-
-    //Chucker
-    debugImplementation(libs.library)
-    releaseImplementation(libs.library.no.op)
 }

@@ -36,15 +36,18 @@ class ProductViewHolder(itemView: View, private val application: Application) :
             tvRating.text = product.rating.toString()
             tvStock.text =
                 application.getString(R.string.stock_number_format, product.stock.toString())
+
             val price = product.price
-            val discount = product.discountPercentage
-            val priceWithoutDiscount = (price * (1 - discount / 100)).roundTo2digits()
             tvPrice.text = application.getString(R.string.price_format, price.toString())
+
+            val discount = product.discountPercentage
+            tvDiscountPercent.text =
+                application.getString(R.string.discount_percent_format, discount.toString())
+
+            val priceWithoutDiscount = (price * (1 - discount / 100)).roundTo2digits()
             tvPriceWithoutDiscount.text =
                 application.getString(R.string.price_format, priceWithoutDiscount.toString())
             tvPriceWithoutDiscount.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG or tvPrice.paintFlags
-            tvDiscountPercent.text =
-                application.getString(R.string.discount_percent_format, discount.toString())
         }
     }
 }

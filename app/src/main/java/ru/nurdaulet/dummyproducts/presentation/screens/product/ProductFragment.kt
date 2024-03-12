@@ -26,7 +26,6 @@ class ProductFragment : Fragment() {
         get() = _binding ?: throw RuntimeException("FragmentProductBinding == null")
 
     private val args by navArgs<ProductFragmentArgs>()
-
     private lateinit var vpAdapter: ViewPagerAdapter
 
     override fun onCreateView(
@@ -47,15 +46,18 @@ class ProductFragment : Fragment() {
             tvProductDescription.text = product.description
             tvRating.text = product.rating.toString()
             tvStock.text = getString(R.string.stock_number_format, product.stock.toString())
+
             val price = product.price
-            val discount = product.discountPercentage
-            val priceWithoutDiscount = (price * (1 - discount / 100)).roundTo2digits()
             tvPrice.text = getString(R.string.price_format, price.toString())
+
+            val discount = product.discountPercentage
+            tvDiscountPercent.text =
+                getString(R.string.discount_percent_format, discount.toString())
+
+            val priceWithoutDiscount = (price * (1 - discount / 100)).roundTo2digits()
             tvPriceWithoutDiscount.text =
                 getString(R.string.price_format, priceWithoutDiscount.toString())
             tvPriceWithoutDiscount.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG or tvPrice.paintFlags
-            tvDiscountPercent.text =
-                getString(R.string.discount_percent_format, discount.toString())
         }
 
         val listOfImages = mutableListOf<ImageProduct>()
