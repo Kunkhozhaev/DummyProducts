@@ -11,8 +11,6 @@
         android:id="@+id/rvProducts"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="-204dp"
-        tools:layout_editor_absoluteY="0dp"
         tools:listitem="@layout/layout_product_card" />
 
     <ProgressBar

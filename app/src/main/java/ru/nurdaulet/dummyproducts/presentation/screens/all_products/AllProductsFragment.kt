@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import ru.nurdaulet.dummyproducts.R
 import ru.nurdaulet.dummyproducts.application.DummyApplication
 import ru.nurdaulet.dummyproducts.databinding.FragmentAllProductsBinding
 import ru.nurdaulet.dummyproducts.presentation.ViewModelFactory
@@ -80,6 +81,15 @@ class AllProductsFragment : Fragment() {
             adapter = productsAdapter
             layoutManager = GridLayoutManager(activity, 2)
             addOnScrollListener(productsScrollListener)
+            val offset = resources.getDimension(R.dimen.rv_item_offset).toInt()
+            addItemDecoration(
+                ProductsOffsetItemDecoration(
+                    bottomOffset = offset,
+                    leftOffset = offset,
+                    rightOffset = offset,
+                    topOffset = offset
+                )
+            )
         }
     }
 
