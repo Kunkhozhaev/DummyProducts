@@ -24,7 +24,6 @@ class ProductViewHolder(itemView: View, private val application: Application) :
             cardProduct.setOnClickListener {
                 onProductClickListener?.invoke(product)
             }
-            //TODO Add error placeholder
             Glide.with(itemView)
                 .load(product.thumbnail)
                 .placeholder(R.drawable.iv_placeholder)
