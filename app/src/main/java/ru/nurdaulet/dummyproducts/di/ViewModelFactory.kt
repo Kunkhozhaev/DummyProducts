@@ -1,4 +1,4 @@
-package ru.nurdaulet.dummyproducts.presentation
+package ru.nurdaulet.dummyproducts.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

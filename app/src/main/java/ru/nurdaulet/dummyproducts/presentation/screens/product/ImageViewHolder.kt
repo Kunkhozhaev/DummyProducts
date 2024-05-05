@@ -1,27 +1,14 @@
 package ru.nurdaulet.dummyproducts.presentation.screens.product
 
-import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import ru.nurdaulet.dummyproducts.R
 import ru.nurdaulet.dummyproducts.databinding.LayoutProductImageBinding
 import ru.nurdaulet.dummyproducts.domain.models.ImageProduct
+import ru.nurdaulet.dummyproducts.utils.loadWithGlide
 
-class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class ImageViewHolder(private val binding: LayoutProductImageBinding) :
+    RecyclerView.ViewHolder(binding.root) {
 
-    private val binding = LayoutProductImageBinding.bind(itemView)
-
-    fun onBind(
-        imageProduct: ImageProduct,
-    ) {
-        binding.apply {
-            Glide.with(itemView)
-                .load(imageProduct.url)
-                .placeholder(R.drawable.iv_placeholder)
-                .error(R.drawable.iv_error)
-                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                .into(ivProduct)
-        }
+    fun onBind(imageProduct: ImageProduct) {
+        binding.ivProduct.loadWithGlide(imageProduct.url)
     }
 }

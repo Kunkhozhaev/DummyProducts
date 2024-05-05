@@ -1,13 +1,11 @@
 package ru.nurdaulet.dummyproducts.presentation.screens.all_products
 
-import android.app.Application
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -17,9 +15,13 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.nurdaulet.dummyproducts.R
 import ru.nurdaulet.dummyproducts.application.DummyApplication
 import ru.nurdaulet.dummyproducts.databinding.FragmentAllProductsBinding
-import ru.nurdaulet.dummyproducts.presentation.ViewModelFactory
+import ru.nurdaulet.dummyproducts.di.ViewModelFactory
+import ru.nurdaulet.dummyproducts.domain.models.Product
 import ru.nurdaulet.dummyproducts.utils.Constants.LIMIT
 import ru.nurdaulet.dummyproducts.utils.Resource
+import ru.nurdaulet.dummyproducts.utils.toast
+import ru.nurdaulet.dummyproducts.utils.viewGone
+import ru.nurdaulet.dummyproducts.utils.viewVisible
 import javax.inject.Inject
 
 class AllProductsFragment : Fragment() {
@@ -29,15 +31,14 @@ class AllProductsFragment : Fragment() {
         get() = _binding ?: throw RuntimeException("FragmentAllProductsBinding == null")
 
     @Inject
-    lateinit var application: Application
-
-    @Inject
     lateinit var viewModelFactory: ViewModelFactory
-    private lateinit var viewModel: AllProductsVM
-    private lateinit var productsAdapter: AllProductsAdapter
+
     private val component by lazy {
         (requireActivity().application as DummyApplication).component
     }
+
+    private lateinit var viewModel: AllProductsVM
+    private lateinit var productsAdapter: AllProductsAdapter
 
     override fun onAttach(context: Context) {
         component.inject(this)
@@ -53,30 +54,26 @@ class AllProductsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this, viewModelFactory)[AllProductsVM::class.java]
+        initViewModel()
         viewModel.getProducts()
+
         setupRecyclerView()
         viewModelObservers()
+        setAdapterListeners()
+    }
 
-        productsAdapter.setOnProductClickListener { product ->
-            viewModel.productsOffset = 0
-            viewModel.productsResponse = null
-            findNavController().navigate(
-                AllProductsFragmentDirections.actionAllProductsFragmentToProductFragment(
-                    product
-                )
-            )
-        }
-
+    private fun initViewModel() {
+        viewModel = ViewModelProvider(this, viewModelFactory)[AllProductsVM::class.java]
     }
 
     private fun setupRecyclerView() {
-        productsAdapter = AllProductsAdapter(application)
+        productsAdapter = AllProductsAdapter()
 
         binding.rvProducts.apply {
             adapter = productsAdapter
             layoutManager = GridLayoutManager(activity, 2)
             addOnScrollListener(productsScrollListener)
+
             val offset = resources.getDimension(R.dimen.rv_item_offset).toInt()
             addItemDecoration(
                 ProductsOffsetItemDecoration(
@@ -93,7 +90,7 @@ class AllProductsFragment : Fragment() {
         viewModel.products.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
-                    binding.loadingBar.visibility = View.GONE
+                    binding.loadingBar.viewGone()
                     isLoading = false
                     response.data?.let { products ->
                         if (products.isNotEmpty()) {
@@ -108,23 +105,41 @@ class AllProductsFragment : Fragment() {
 
                 is Resource.Error -> {
                     isLoading = false
-                    binding.loadingBar.visibility = View.GONE
-                    Toast.makeText(requireContext(), response.message, Toast.LENGTH_SHORT)
-                        .show()
+                    binding.loadingBar.viewGone()
+                    toast(response.message.toString())
                 }
 
                 is Resource.Loading -> {
                     isLoading = true
                     if (viewModel.productsOffset == 100) {
-                        binding.loadingBar.visibility = View.GONE
+                        binding.loadingBar.viewGone()
                     } else {
-                        binding.loadingBar.visibility = View.VISIBLE
+                        binding.loadingBar.viewVisible()
                     }
                 }
             }
         }
     }
 
+    private fun setAdapterListeners() {
+        productsAdapter.setOnProductClickListener { product ->
+            viewModel.productsOffset = 0
+            viewModel.productsResponse = null
+            navigateToProductFragment(product)
+        }
+    }
+
+    private fun navigateToProductFragment(product: Product) {
+        findNavController().navigate(
+            AllProductsFragmentDirections.actionAllProductsFragmentToProductFragment(
+                product
+            )
+        )
+    }
+
+    /**
+     * Setting logic for pagination
+     */
     private var isLoading = false
     private var isLastProduct = false
     private var isScrolling = false
@@ -159,7 +174,8 @@ class AllProductsFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
+        binding.rvProducts.adapter = null
         _binding = null
+        super.onDestroyView()
     }
 }

@@ -19,5 +19,4 @@ interface DummyApi {
         const val QUERY_PARAM_SKIP = "skip"
         const val QUERY_PARAM_LIMIT = "limit"
     }
-
 }

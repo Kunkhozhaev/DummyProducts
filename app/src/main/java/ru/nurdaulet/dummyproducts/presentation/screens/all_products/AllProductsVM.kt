@@ -1,9 +1,6 @@
 package ru.nurdaulet.dummyproducts.presentation.screens.all_products
 
 import android.app.Application
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -31,7 +28,7 @@ class AllProductsVM @Inject constructor(
     fun getProducts() = viewModelScope.launch {
         _products.value = Resource.Loading()
         try {
-            if (hasInternetConnection()) {
+            if (hasInternetConnection) {
                 repository.getProducts(productsOffset,
                     onSuccess = { data ->
                         if (data.isNotEmpty()) {
@@ -58,13 +55,5 @@ class AllProductsVM @Inject constructor(
         }
     }
 
-    private fun hasInternetConnection(): Boolean {
-        val connectivityManager = getApplication<DummyApplication>().getSystemService(
-            Context.CONNECTIVITY_SERVICE
-        ) as ConnectivityManager
-
-        val activeNetwork = connectivityManager.activeNetwork ?: return false
-        val capabilities = connectivityManager.getNetworkCapabilities(activeNetwork) ?: return false
-        return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-    }
+    private val hasInternetConnection = (app as DummyApplication).hasInternetConnection()
 }

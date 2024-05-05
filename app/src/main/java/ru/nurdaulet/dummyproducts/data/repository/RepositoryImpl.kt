@@ -9,8 +9,8 @@ import javax.inject.Inject
 class RepositoryImpl @Inject constructor(
     private val mapper: Mapper,
 ) : Repository {
-
     private val apiService = ApiFactory.apiService
+
     override suspend fun getProducts(
         skip: Int,
         onSuccess: (List<Product>) -> Unit,
