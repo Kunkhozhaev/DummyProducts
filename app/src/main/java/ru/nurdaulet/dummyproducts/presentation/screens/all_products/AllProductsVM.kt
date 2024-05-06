@@ -5,10 +5,15 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.liveData
 import kotlinx.coroutines.launch
 import ru.nurdaulet.dummyproducts.application.DummyApplication
+import ru.nurdaulet.dummyproducts.data.repository.ProductsListDataSource
 import ru.nurdaulet.dummyproducts.domain.Repository
 import ru.nurdaulet.dummyproducts.domain.models.Product
+import ru.nurdaulet.dummyproducts.utils.Constants.LIMIT
 import ru.nurdaulet.dummyproducts.utils.Constants.NO_NETWORK
 import ru.nurdaulet.dummyproducts.utils.Resource
 import java.io.IOException
@@ -54,6 +59,11 @@ class AllProductsVM @Inject constructor(
             }
         }
     }
+
+    fun getProductsPaging() = Pager(
+        config = PagingConfig(pageSize = LIMIT, enablePlaceholders = false),
+        pagingSourceFactory = { ProductsListDataSource(repository) }
+    ).liveData
 
     private val hasInternetConnection = (app as DummyApplication).hasInternetConnection()
 }

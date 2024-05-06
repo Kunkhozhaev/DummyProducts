@@ -7,16 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.launch
 import ru.nurdaulet.dummyproducts.R
 import ru.nurdaulet.dummyproducts.application.DummyApplication
 import ru.nurdaulet.dummyproducts.databinding.FragmentAllProductsBinding
 import ru.nurdaulet.dummyproducts.di.ViewModelFactory
 import ru.nurdaulet.dummyproducts.domain.models.Product
+import ru.nurdaulet.dummyproducts.presentation.screens.all_products.paging_adapter.ProductsPagingAdapter
 import ru.nurdaulet.dummyproducts.utils.Constants.LIMIT
 import ru.nurdaulet.dummyproducts.utils.Resource
 import ru.nurdaulet.dummyproducts.utils.toast
@@ -39,6 +44,7 @@ class AllProductsFragment : Fragment() {
 
     private lateinit var viewModel: AllProductsVM
     private lateinit var productsAdapter: AllProductsAdapter
+    private lateinit var pagingAdapter: ProductsPagingAdapter
 
     override fun onAttach(context: Context) {
         component.inject(this)
@@ -68,9 +74,10 @@ class AllProductsFragment : Fragment() {
 
     private fun setupRecyclerView() {
         productsAdapter = AllProductsAdapter()
+        pagingAdapter = ProductsPagingAdapter()
 
         binding.rvProducts.apply {
-            adapter = productsAdapter
+            adapter = pagingAdapter
             layoutManager = GridLayoutManager(activity, 2)
             addOnScrollListener(productsScrollListener)
 
@@ -87,35 +94,42 @@ class AllProductsFragment : Fragment() {
     }
 
     private fun viewModelObservers() {
-        viewModel.products.observe(viewLifecycleOwner) { response ->
-            when (response) {
-                is Resource.Success -> {
-                    binding.loadingBar.viewGone()
-                    isLoading = false
-                    response.data?.let { products ->
-                        if (products.isNotEmpty()) {
-                            productsAdapter.submitList(products.toList())
-                            viewModel.productsOffset += LIMIT
-                            isLastProduct = false
-                        } else {
-                            isLastProduct = true
-                        }
-                    }
-                }
-
-                is Resource.Error -> {
-                    isLoading = false
-                    binding.loadingBar.viewGone()
-                    toast(response.message.toString())
-                }
-
-                is Resource.Loading -> {
-                    isLoading = true
-                    if (viewModel.productsOffset == 100) {
-                        binding.loadingBar.viewGone()
-                    } else {
-                        binding.loadingBar.viewVisible()
-                    }
+//        viewModel.products.observe(viewLifecycleOwner) { response ->
+//            when (response) {
+//                is Resource.Success -> {
+//                    binding.loadingBar.viewGone()
+//                    isLoading = false
+//                    response.data?.let { products ->
+//                        if (products.isNotEmpty()) {
+//                            productsAdapter.submitList(products.toList())
+//                            viewModel.productsOffset += LIMIT
+//                            isLastProduct = false
+//                        } else {
+//                            isLastProduct = true
+//                        }
+//                    }
+//                }
+//
+//                is Resource.Error -> {
+//                    isLoading = false
+//                    binding.loadingBar.viewGone()
+//                    toast(response.message.toString())
+//                }
+//
+//                is Resource.Loading -> {
+//                    isLoading = true
+//                    if (viewModel.productsOffset == 100) {
+//                        binding.loadingBar.viewGone()
+//                    } else {
+//                        binding.loadingBar.viewVisible()
+//                    }
+//                }
+//            }
+//        }
+        viewModel.getProductsPaging().observe(viewLifecycleOwner) {
+            lifecycleScope.launch {
+                lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                    pagingAdapter.submitData(it)
                 }
             }
         }

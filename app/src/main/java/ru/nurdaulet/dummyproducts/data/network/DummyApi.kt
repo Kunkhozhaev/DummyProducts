@@ -15,6 +15,14 @@ interface DummyApi {
         limit: Int = LIMIT
     ): Response<ProductsListDto>
 
+    @GET("products")
+    suspend fun getProductsPaging(
+        @Query(QUERY_PARAM_SKIP)
+        skip: Int,
+        @Query(QUERY_PARAM_LIMIT)
+        limit: Int,
+    ): Response<ProductsListDto>
+
     companion object {
         const val QUERY_PARAM_SKIP = "skip"
         const val QUERY_PARAM_LIMIT = "limit"
