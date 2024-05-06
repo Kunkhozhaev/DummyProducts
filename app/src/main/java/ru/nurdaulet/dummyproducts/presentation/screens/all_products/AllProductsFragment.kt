@@ -7,10 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,10 +21,6 @@ import ru.nurdaulet.dummyproducts.di.ViewModelFactory
 import ru.nurdaulet.dummyproducts.domain.models.Product
 import ru.nurdaulet.dummyproducts.presentation.screens.all_products.paging_adapter.ProductsPagingAdapter
 import ru.nurdaulet.dummyproducts.utils.Constants.LIMIT
-import ru.nurdaulet.dummyproducts.utils.Resource
-import ru.nurdaulet.dummyproducts.utils.toast
-import ru.nurdaulet.dummyproducts.utils.viewGone
-import ru.nurdaulet.dummyproducts.utils.viewVisible
 import javax.inject.Inject
 
 class AllProductsFragment : Fragment() {
@@ -128,9 +122,8 @@ class AllProductsFragment : Fragment() {
 //        }
         viewModel.getProductsPaging().observe(viewLifecycleOwner) {
             lifecycleScope.launch {
-                lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                    pagingAdapter.submitData(it)
-                }
+                //TODO do we rlly need State.RESUMED?
+                pagingAdapter.submitData(it)
             }
         }
     }
@@ -141,6 +134,10 @@ class AllProductsFragment : Fragment() {
             viewModel.productsResponse = null
             navigateToProductFragment(product)
         }
+        pagingAdapter.setOnProductClickListener { product ->
+            navigateToProductFragment(product)
+        }
+
     }
 
     private fun navigateToProductFragment(product: Product) {

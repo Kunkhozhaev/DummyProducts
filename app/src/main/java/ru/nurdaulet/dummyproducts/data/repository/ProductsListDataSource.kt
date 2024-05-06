@@ -4,6 +4,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import ru.nurdaulet.dummyproducts.domain.Repository
 import ru.nurdaulet.dummyproducts.domain.models.Product
+import ru.nurdaulet.dummyproducts.utils.Constants.LIMIT
 import javax.inject.Inject
 
 class ProductsListDataSource @Inject constructor(
@@ -22,8 +23,8 @@ class ProductsListDataSource @Inject constructor(
             onSuccess = { productList ->
                 result = LoadResult.Page(
                     data = productList,
-                    prevKey = if (position == STARTING_PAGE_INDEX) null else position - 1,
-                    nextKey = if (productList.isEmpty()) null else position + 1
+                    prevKey = if (position == STARTING_PAGE_INDEX) null else position - LIMIT,
+                    nextKey = if (productList.isEmpty()) null else position + LIMIT
                 )
             },
             onFailure = {
