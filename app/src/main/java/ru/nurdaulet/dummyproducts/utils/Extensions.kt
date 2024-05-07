@@ -14,11 +14,11 @@ fun Double.roundTo2digits(): Double {
     return this.times(100).roundToInt().toDouble().div(100)
 }
 
-fun Context.toast(text: String, duration: Int = Toast.LENGTH_SHORT) =
+fun Context.showToast(text: String, duration: Int = Toast.LENGTH_SHORT) =
     Toast.makeText(this, text, duration).show()
 
-fun Fragment.toast(text: String, duration: Int = Toast.LENGTH_SHORT) {
-    if (context != null) context!!.toast(text, duration)
+fun Fragment.showToast(text: String, duration: Int = Toast.LENGTH_SHORT) {
+    if (context != null) context!!.showToast(text, duration)
 }
 
 fun ImageView.loadWithGlide(url: String) {

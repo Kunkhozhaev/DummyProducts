@@ -17,7 +17,7 @@ import ru.nurdaulet.dummyproducts.R
 import ru.nurdaulet.dummyproducts.databinding.FragmentProductBinding
 import ru.nurdaulet.dummyproducts.domain.models.ImageProduct
 import ru.nurdaulet.dummyproducts.utils.roundTo2digits
-import ru.nurdaulet.dummyproducts.utils.toast
+import ru.nurdaulet.dummyproducts.utils.showToast
 import kotlin.math.abs
 
 class ProductFragment : Fragment() {
@@ -102,7 +102,7 @@ class ProductFragment : Fragment() {
     }
 
     private fun setClickListeners() {
-        binding.btnAddToCart.setOnClickListener { toast("Added to cart") }
+        binding.btnAddToCart.setOnClickListener { showToast("Added to cart") }
     }
 
     override fun onDestroyView() {

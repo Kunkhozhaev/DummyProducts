@@ -5,14 +5,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AbsListView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.nurdaulet.dummyproducts.R
 import ru.nurdaulet.dummyproducts.application.DummyApplication
@@ -20,7 +21,9 @@ import ru.nurdaulet.dummyproducts.databinding.FragmentAllProductsBinding
 import ru.nurdaulet.dummyproducts.di.ViewModelFactory
 import ru.nurdaulet.dummyproducts.domain.models.Product
 import ru.nurdaulet.dummyproducts.presentation.screens.all_products.paging_adapter.ProductsPagingAdapter
-import ru.nurdaulet.dummyproducts.utils.Constants.LIMIT
+import ru.nurdaulet.dummyproducts.utils.showToast
+import ru.nurdaulet.dummyproducts.utils.viewGone
+import ru.nurdaulet.dummyproducts.utils.viewVisible
 import javax.inject.Inject
 
 class AllProductsFragment : Fragment() {
@@ -55,8 +58,6 @@ class AllProductsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViewModel()
-        viewModel.getProducts()
-
         setupRecyclerView()
         viewModelObservers()
         setAdapterListeners()
@@ -73,7 +74,6 @@ class AllProductsFragment : Fragment() {
         binding.rvProducts.apply {
             adapter = pagingAdapter
             layoutManager = GridLayoutManager(activity, 2)
-            addOnScrollListener(productsScrollListener)
 
             val offset = resources.getDimension(R.dimen.rv_item_offset).toInt()
             addItemDecoration(
@@ -88,56 +88,60 @@ class AllProductsFragment : Fragment() {
     }
 
     private fun viewModelObservers() {
-//        viewModel.products.observe(viewLifecycleOwner) { response ->
-//            when (response) {
-//                is Resource.Success -> {
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                viewModel.getProductsPaging().collectLatest {
+                    pagingAdapter.submitData(it)
+                }
+            }
+        }
+        lifecycleScope.launch {
+            pagingAdapter.loadStateFlow.collect {
+                if (it.refresh is LoadState.Loading) {
+                    binding.loadingBar.viewVisible()
+                }
+                if (it.refresh is LoadState.NotLoading && pagingAdapter.itemCount == 0) {
+                    binding.loadingBar.viewGone()
+                }
+                if (it.refresh is LoadState.NotLoading && pagingAdapter.itemCount != 0) {
+                    binding.loadingBar.viewGone()
+                }
+                if (it.refresh is LoadState.Error) {
+                    showToast((it.refresh as LoadState.Error).error.message.toString())
+                }
+            }
+        }
+//        pagingAdapter.addLoadStateListener { loadState ->
+//            when (val state = loadState.source.refresh) {
+//                is LoadState.NotLoading -> {
+//                    /**
+//                     * Setting up the views as per your requirement
+//                     */
 //                    binding.loadingBar.viewGone()
-//                    isLoading = false
-//                    response.data?.let { products ->
-//                        if (products.isNotEmpty()) {
-//                            productsAdapter.submitList(products.toList())
-//                            viewModel.productsOffset += LIMIT
-//                            isLastProduct = false
-//                        } else {
-//                            isLastProduct = true
-//                        }
-//                    }
 //                }
+//                is LoadState.Loading -> {
+//                    /**
+//                     * Setting up the views as per your requirement
+//                     */
+//                    binding.loadingBar.viewVisible()
 //
-//                is Resource.Error -> {
-//                    isLoading = false
+//                }
+//                is LoadState.Error -> {
+//                    /**
+//                     * Setting up the views as per your requirement
+//                     */
 //                    binding.loadingBar.viewGone()
-//                    toast(response.message.toString())
-//                }
-//
-//                is Resource.Loading -> {
-//                    isLoading = true
-//                    if (viewModel.productsOffset == 100) {
-//                        binding.loadingBar.viewGone()
-//                    } else {
-//                        binding.loadingBar.viewVisible()
-//                    }
+//                    showToast(state.error.message.orEmpty())
 //                }
 //            }
 //        }
-        viewModel.getProductsPaging().observe(viewLifecycleOwner) {
-            lifecycleScope.launch {
-                //TODO do we rlly need State.RESUMED?
-                pagingAdapter.submitData(it)
-            }
-        }
+
     }
 
     private fun setAdapterListeners() {
-        productsAdapter.setOnProductClickListener { product ->
-            viewModel.productsOffset = 0
-            viewModel.productsResponse = null
-            navigateToProductFragment(product)
-        }
         pagingAdapter.setOnProductClickListener { product ->
             navigateToProductFragment(product)
         }
-
     }
 
     private fun navigateToProductFragment(product: Product) {
@@ -146,42 +150,6 @@ class AllProductsFragment : Fragment() {
                 product
             )
         )
-    }
-
-    /**
-     * Setting logic for pagination
-     */
-    private var isLoading = false
-    private var isLastProduct = false
-    private var isScrolling = false
-
-    private val productsScrollListener = object : RecyclerView.OnScrollListener() {
-        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-            super.onScrollStateChanged(recyclerView, newState)
-            if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
-                isScrolling = true
-            }
-        }
-
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            super.onScrolled(recyclerView, dx, dy)
-
-            val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-            val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
-            val visibleItemCount = layoutManager.childCount
-            val totalItemCount = layoutManager.itemCount
-
-            val isNotLoadingAndNotLastProduct = !isLoading && !isLastProduct
-            val isAtLastItem = firstVisibleItemPosition + visibleItemCount >= totalItemCount
-            val isNotAtBeginning = firstVisibleItemPosition >= 0
-            val isTotalMoreThanVisible = totalItemCount >= LIMIT
-            val shouldPaginate = isNotLoadingAndNotLastProduct && isAtLastItem &&
-                    isNotAtBeginning && isTotalMoreThanVisible && isScrolling
-            if (shouldPaginate) {
-                viewModel.getProducts()
-                isScrolling = false
-            }
-        }
     }
 
     override fun onDestroyView() {
