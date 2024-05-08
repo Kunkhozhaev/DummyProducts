@@ -1,31 +1,23 @@
 package ru.nurdaulet.dummyproducts.data.repository
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import kotlinx.coroutines.flow.Flow
 import ru.nurdaulet.dummyproducts.data.Mapper
-import ru.nurdaulet.dummyproducts.data.network.ApiFactory
 import ru.nurdaulet.dummyproducts.domain.Repository
 import ru.nurdaulet.dummyproducts.domain.models.Product
+import ru.nurdaulet.dummyproducts.utils.Constants
 import javax.inject.Inject
 
 class RepositoryImpl @Inject constructor(
     private val mapper: Mapper,
 ) : Repository {
-    private val apiService = ApiFactory.apiService
 
-    override suspend fun getProducts(
-        skip: Int,
-        onSuccess: (List<Product>) -> Unit,
-        onFailure: (msg: String?) -> Unit
-    ) {
-        val response = apiService.getProducts(skip)
-        if (response.isSuccessful) {
-            response.body()?.let { data ->
-                val products = data.products
-                if (products.isNotEmpty()) {
-                    onSuccess.invoke(mapper.mapListDtoToModel(products))
-                }
-            }
-        } else {
-            onFailure.invoke(response.errorBody()?.string())
-        }
+    override fun getDataSource(): Flow<PagingData<Product>> {
+        return Pager(
+            config = PagingConfig(pageSize = Constants.LIMIT, enablePlaceholders = false),
+            pagingSourceFactory = { ProductsListDataSource(mapper) }
+        ).flow
     }
 }

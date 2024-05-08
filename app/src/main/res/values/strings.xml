@@ -4,5 +4,7 @@
     <string name="discount_percent_format">-%1$s%%</string>
     <string name="stock_number_format">%1$s in stock</string>
     <string name="add_to_cart">Add to cart</string>
+    <string name="add_to_cart_clicked">Added to cart</string>
     <string name="buy">Buy</string>
+    <string name="buy_clicked">Bought</string>
 </resources>

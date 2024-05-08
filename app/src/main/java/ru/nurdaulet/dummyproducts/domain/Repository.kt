@@ -1,11 +1,9 @@
 package ru.nurdaulet.dummyproducts.domain
 
+import androidx.paging.PagingData
+import kotlinx.coroutines.flow.Flow
 import ru.nurdaulet.dummyproducts.domain.models.Product
 
 interface Repository {
-    suspend fun getProducts(
-        skip: Int,
-        onSuccess: (List<Product>) -> Unit,
-        onFailure: (msg: String?) -> Unit
-    )
+    fun getDataSource(): Flow<PagingData<Product>>
 }

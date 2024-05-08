@@ -1,4 +1,4 @@
-package ru.nurdaulet.dummyproducts.presentation.screens.all_products.paging_adapter
+package ru.nurdaulet.dummyproducts.presentation.screens.all_products
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

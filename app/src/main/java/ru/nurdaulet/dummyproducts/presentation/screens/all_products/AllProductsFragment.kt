@@ -2,6 +2,7 @@ package ru.nurdaulet.dummyproducts.presentation.screens.all_products
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +21,6 @@ import ru.nurdaulet.dummyproducts.application.DummyApplication
 import ru.nurdaulet.dummyproducts.databinding.FragmentAllProductsBinding
 import ru.nurdaulet.dummyproducts.di.ViewModelFactory
 import ru.nurdaulet.dummyproducts.domain.models.Product
-import ru.nurdaulet.dummyproducts.presentation.screens.all_products.paging_adapter.ProductsPagingAdapter
 import ru.nurdaulet.dummyproducts.utils.showToast
 import ru.nurdaulet.dummyproducts.utils.viewGone
 import ru.nurdaulet.dummyproducts.utils.viewVisible
@@ -40,7 +40,6 @@ class AllProductsFragment : Fragment() {
     }
 
     private lateinit var viewModel: AllProductsVM
-    private lateinit var productsAdapter: AllProductsAdapter
     private lateinit var pagingAdapter: ProductsPagingAdapter
 
     override fun onAttach(context: Context) {
@@ -68,7 +67,6 @@ class AllProductsFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        productsAdapter = AllProductsAdapter()
         pagingAdapter = ProductsPagingAdapter()
 
         binding.rvProducts.apply {
@@ -97,6 +95,7 @@ class AllProductsFragment : Fragment() {
         }
         lifecycleScope.launch {
             pagingAdapter.loadStateFlow.collect {
+                Log.d("LoadState", "LoadState: ${it.refresh}")
                 if (it.refresh is LoadState.Loading) {
                     binding.loadingBar.viewVisible()
                 }
@@ -111,31 +110,6 @@ class AllProductsFragment : Fragment() {
                 }
             }
         }
-//        pagingAdapter.addLoadStateListener { loadState ->
-//            when (val state = loadState.source.refresh) {
-//                is LoadState.NotLoading -> {
-//                    /**
-//                     * Setting up the views as per your requirement
-//                     */
-//                    binding.loadingBar.viewGone()
-//                }
-//                is LoadState.Loading -> {
-//                    /**
-//                     * Setting up the views as per your requirement
-//                     */
-//                    binding.loadingBar.viewVisible()
-//
-//                }
-//                is LoadState.Error -> {
-//                    /**
-//                     * Setting up the views as per your requirement
-//                     */
-//                    binding.loadingBar.viewGone()
-//                    showToast(state.error.message.orEmpty())
-//                }
-//            }
-//        }
-
     }
 
     private fun setAdapterListeners() {

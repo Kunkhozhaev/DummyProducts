@@ -102,7 +102,7 @@ class ProductFragment : Fragment() {
     }
 
     private fun setClickListeners() {
-        binding.btnAddToCart.setOnClickListener { showToast("Added to cart") }
+        binding.btnAddToCart.setOnClickListener { showToast(getString(R.string.add_to_cart_clicked)) }
     }
 
     override fun onDestroyView() {

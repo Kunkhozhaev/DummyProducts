@@ -1,4 +1,4 @@
-package ru.nurdaulet.dummyproducts.presentation.screens.all_products.paging_adapter
+package ru.nurdaulet.dummyproducts.presentation.screens.all_products
 
 import android.graphics.Paint
 import androidx.recyclerview.widget.RecyclerView
@@ -7,6 +7,7 @@ import ru.nurdaulet.dummyproducts.databinding.LayoutProductCardBinding
 import ru.nurdaulet.dummyproducts.domain.models.Product
 import ru.nurdaulet.dummyproducts.utils.loadWithGlide
 import ru.nurdaulet.dummyproducts.utils.roundTo2digits
+import ru.nurdaulet.dummyproducts.utils.showToast
 
 class ProductPagingViewHolder(private val binding: LayoutProductCardBinding) :
     RecyclerView.ViewHolder(binding.root) {
@@ -47,5 +48,8 @@ class ProductPagingViewHolder(private val binding: LayoutProductCardBinding) :
         onProductClickListener: ((Product) -> Unit?)?
     ) {
         binding.cardProduct.setOnClickListener { onProductClickListener?.invoke(product) }
+        binding.btnBuy.setOnClickListener {
+            itemView.context.apply { showToast(getString(R.string.buy_clicked)) }
+        }
     }
 }
