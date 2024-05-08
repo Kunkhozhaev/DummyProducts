@@ -80,7 +80,7 @@ class ProductFragment : Fragment(R.layout.fragment_product) {
             tvDiscountPercent.text =
                 getString(R.string.discount_percent_format, discount.toString())
 
-            val priceWithoutDiscount = (price * (1 - discount / 100)).roundTo2digits()
+            val priceWithoutDiscount = (price * (1 + discount / 100)).roundTo2digits()
             tvPriceWithoutDiscount.text =
                 getString(R.string.price_format, priceWithoutDiscount.toString())
             tvPriceWithoutDiscount.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG or tvPrice.paintFlags
