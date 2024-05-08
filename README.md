@@ -1,3 +1,13 @@
+Stack:
+- Retrofit2
+- Dagger2
+- Glide
+- Flow
+- Coroutines
+- Jetpack Navigation
+- XML
+- Kotlin
+  
 2 screens are implemented:
   - All products
   - Single product page
