@@ -6,7 +6,7 @@ import retrofit2.HttpException
 import ru.nurdaulet.dummyproducts.data.Mapper
 import ru.nurdaulet.dummyproducts.data.network.ApiFactory
 import ru.nurdaulet.dummyproducts.domain.models.Product
-import ru.nurdaulet.dummyproducts.utils.Constants.LIMIT
+import ru.nurdaulet.dummyproducts.utils.Constants.PAGE_SIZE
 import java.io.IOException
 import javax.inject.Inject
 
@@ -33,8 +33,8 @@ class ProductsListDataSource @Inject constructor(
                         val productList = mapper.mapListDtoToModel(products)
                         result = LoadResult.Page(
                             data = productList,
-                            prevKey = if (position == STARTING_PAGE_INDEX) null else position - LIMIT,
-                            nextKey = if (productList.isEmpty()) null else position + LIMIT
+                            prevKey = if (position == STARTING_PAGE_INDEX) null else position - PAGE_SIZE,
+                            nextKey = if (productList.isEmpty()) null else position + PAGE_SIZE
                         )
                     }
                 }
@@ -51,9 +51,6 @@ class ProductsListDataSource @Inject constructor(
         }
 
     override fun getRefreshKey(state: PagingState<Int, Product>): Int? {
-        // We need to get the previous key (or next key if previous is null) of the page
-        // that was closest to the most recently accessed index.
-        // Anchor position is the most recently accessed index
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
                 ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)

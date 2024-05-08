@@ -3,9 +3,7 @@ package ru.nurdaulet.dummyproducts.presentation.screens.product
 import android.content.res.Resources
 import android.graphics.Paint
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -13,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
+import by.kirich1409.viewbindingdelegate.viewBinding
 import ru.nurdaulet.dummyproducts.R
 import ru.nurdaulet.dummyproducts.databinding.FragmentProductBinding
 import ru.nurdaulet.dummyproducts.domain.models.ImageProduct
@@ -20,21 +19,12 @@ import ru.nurdaulet.dummyproducts.utils.roundTo2digits
 import ru.nurdaulet.dummyproducts.utils.showToast
 import kotlin.math.abs
 
-class ProductFragment : Fragment() {
+class ProductFragment : Fragment(R.layout.fragment_product) {
 
-    private var _binding: FragmentProductBinding? = null
-    private val binding: FragmentProductBinding
-        get() = _binding ?: throw RuntimeException("FragmentProductBinding == null")
+    private val binding: FragmentProductBinding by viewBinding()
 
     private val args by navArgs<ProductFragmentArgs>()
     private lateinit var vpAdapter: ViewPagerAdapter
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentProductBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -107,7 +97,6 @@ class ProductFragment : Fragment() {
 
     override fun onDestroyView() {
         binding.vp2.adapter = null
-        _binding = null
         super.onDestroyView()
     }
 }

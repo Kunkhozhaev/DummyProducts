@@ -2,10 +2,7 @@ package ru.nurdaulet.dummyproducts.presentation.screens.all_products
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -14,6 +11,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
+import by.kirich1409.viewbindingdelegate.viewBinding
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.nurdaulet.dummyproducts.R
@@ -26,11 +24,9 @@ import ru.nurdaulet.dummyproducts.utils.viewGone
 import ru.nurdaulet.dummyproducts.utils.viewVisible
 import javax.inject.Inject
 
-class AllProductsFragment : Fragment() {
+class AllProductsFragment : Fragment(R.layout.fragment_all_products) {
 
-    private var _binding: FragmentAllProductsBinding? = null
-    private val binding: FragmentAllProductsBinding
-        get() = _binding ?: throw RuntimeException("FragmentAllProductsBinding == null")
+    private val binding: FragmentAllProductsBinding by viewBinding()
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -45,13 +41,6 @@ class AllProductsFragment : Fragment() {
     override fun onAttach(context: Context) {
         component.inject(this)
         super.onAttach(context)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentAllProductsBinding.inflate(inflater, container, false)
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -95,7 +84,6 @@ class AllProductsFragment : Fragment() {
         }
         lifecycleScope.launch {
             pagingAdapter.loadStateFlow.collect {
-                Log.d("LoadState", "LoadState: ${it.refresh}")
                 if (it.refresh is LoadState.Loading) {
                     binding.loadingBar.viewVisible()
                 }
@@ -113,9 +101,7 @@ class AllProductsFragment : Fragment() {
     }
 
     private fun setAdapterListeners() {
-        pagingAdapter.setOnProductClickListener { product ->
-            navigateToProductFragment(product)
-        }
+        pagingAdapter.setOnProductClickListener { product -> navigateToProductFragment(product) }
     }
 
     private fun navigateToProductFragment(product: Product) {
@@ -128,7 +114,6 @@ class AllProductsFragment : Fragment() {
 
     override fun onDestroyView() {
         binding.rvProducts.adapter = null
-        _binding = null
         super.onDestroyView()
     }
 }

@@ -8,6 +8,7 @@ import ru.nurdaulet.dummyproducts.presentation.screens.all_products.AllProductsF
 @ApplicationScope
 @Component(modules = [DataModule::class, ViewModelModule::class])
 interface ApplicationComponent {
+
     fun inject(fragment: AllProductsFragment)
 
     @Component.Factory

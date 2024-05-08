@@ -16,7 +16,7 @@ class RepositoryImpl @Inject constructor(
 
     override fun getDataSource(): Flow<PagingData<Product>> {
         return Pager(
-            config = PagingConfig(pageSize = Constants.LIMIT, enablePlaceholders = false),
+            config = PagingConfig(pageSize = Constants.PAGE_SIZE, enablePlaceholders = false),
             pagingSourceFactory = { ProductsListDataSource(mapper) }
         ).flow
     }
