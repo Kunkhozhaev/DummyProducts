@@ -15,7 +15,7 @@ class Mapper @Inject constructor() {
             discountPercentage = product.discountPercentage,
             rating = product.rating,
             stock = product.stock,
-            brand = product.brand,
+            brand = product.brand ?: "",
             category = product.category,
             thumbnail = product.thumbnail,
             images = product.images
